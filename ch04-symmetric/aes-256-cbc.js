@@ -1,3 +1,5 @@
+// encrypt/decrypt data using aes-256-cbc cipher 
+
 const crypto = require("crypto");
 const randombytes = require("util").promisify(crypto.randomBytes);
 
@@ -21,3 +23,14 @@ function decrypt(key, message) {
   ]);
   return decrypted.toString("utf8");
 }
+
+// use immediately invoked function so we can run async code
+(async () => {
+  const plaintext = 'Hello World!'
+  const key = await randombytes(32)
+  console.log('Key: ', key.toString('base64'))
+  const encrypted = await encrypt(key, plaintext)
+  console.log('Encrypted Message: ', encrypted.toString("base64"))
+  const decrypted = decrypt(key, encrypted)
+  console.log('Decrypted Message: ', decrypted)
+})()
